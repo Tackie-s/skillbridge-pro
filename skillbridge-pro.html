@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillBridge Pro - AI-Powered Career Development</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f1f5f9;
+            --text: #334155;
+            --border: #e2e8f0;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Hide sections initially */
+        .app-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .app-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: bgMove 20s linear infinite;
+        }
+
+        @keyframes bgMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.5;
+            animation: float 10s infinite ease-in-out;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .orb1 {
+            width: 300px;
+            height: 300px;
+            background: #ec4899;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 200px;
+            height: 200px;
+            background: #8b5cf6;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .orb3 {
+            width: 250px;
+            height: 250px;
+            background: #06b6d4;
+            bottom: 10%;
+            left: 30%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 10px) scale(1.02); }
+        }
+
+        /* Welcome Screen */
+        .welcome-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .welcome-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-large {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .welcome-subtitle {
+            color: var(--text);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Onboarding Form */
+        .onboarding-form {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .radio-input {
+            display: none;
+        }
+
+        .radio-label {
+            display: block;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-input:checked + .radio-label {
+            background: var(--gradient);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .radio-label:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Assessment Section */
+        .assessment-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .assessment-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .assessment-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .assessment-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .assessment-progress {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar-container {
+            flex: 1;
+            background: var(--light);
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 1rem;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient);
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .question-card {
+            margin-bottom: 2rem;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .question-number {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .answer-options {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .answer-option {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .answer-option:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .answer-option.selected {
+            background: var(--gradient);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .answer-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .answer-option.selected .answer-radio {
+            border-color: white;
+            background: white;
+        }
+
+        .answer-option.selected .answer-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .assessment-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Dashboard */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-welcome {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .user-details h1 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .user-details p {
+            color: var(--text);
+        }
+
+        .overall-score {
+            text-align: center;
+            padding: 1rem 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .score-label {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .skill-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .skill-bar {
+            background: var(--light);
+            height: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: var(--gradient);
+            transition: width 1s ease;
+            position: relative;
+        }
+
+        .skill-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .skill-level {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        /* Recommendations */
+        .recommendations-section {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .recommendations-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .recommendations-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .recommendation-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .recommendation-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .rec-type {
+            display: inline-block;
+            background: var(--light);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .rec-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .rec-description {
+            color: var(--text);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .rec-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text);
+            font-size: 0.85rem;
+        }
+
+        .rec-difficulty {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .difficulty-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .difficulty-dot.filled {
+            background: var(--warning);
+        }
+
+        /* Loading State */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--light);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text);
+            font-size: 1.1rem;
+        }
+
+        /* Results Section */
+        .results-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .results-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .results-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 1s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .results-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .results-subtitle {
+            color: var(--text);
+            margin-bottom: 2rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .result-item {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-label {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .welcome-card {
+                padding: 2rem;
+            }
+
+            .skills-grid,
+            .recommendations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-welcome {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-info {
+                flex-direction: column;
+            }
+
+            .assessment-navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn-secondary {
+                width: 100%;
+            }
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideInUp 0.3s ease;
+            z-index: 1000;
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast.info {
+            border-left: 4px solid var(--primary);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+
+        .toast-message {
+            flex: 1;
+            color: var(--text);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+
+        /* Skill Category Icons */
+        .category-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .nav-bar.active {
+            display: block;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .btn-logout {
+            background: var(--danger);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <!-- Navigation Bar (Hidden initially) -->
+    <nav class="nav-bar" id="navBar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span>🚀</span>
+                <span>SkillBridge Pro</span>
+            </div>
+            <div class="nav-menu">
+                <span class="nav-link" onclick="showDashboard()" style="cursor: pointer;">Dashboard</span>
+                <span class="nav-link" onclick="retakeAssessment()" style="cursor: pointer;">Retake Assessment</span>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Welcome/Onboarding Section -->
+    <section id="welcomeSection" class="app-section active">
+        <div class="welcome-container">
+            <div class="welcome-card">
+                <div class="logo-large">🚀</div>
+                <h1 class="welcome-title">Welcome to SkillBridge Pro</h1>
+                <p class="welcome-subtitle">
+                    Your AI-powered career companion that helps you discover your strengths, 
+                    identify growth areas, and accelerate your professional journey.
+                </p>
+                
+                <form class="onboarding-form" id="onboardingForm">
+                    <div class="form-group">
+                        <label class="form-label">What's your name?</label>
+                        <input type="text" class="form-input" id="userName" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Your current role</label>
+                        <input type="text" class="form-input" id="userRole" placeholder="e.g., Software Developer, Marketing Manager" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Years of experience</label>
+                        <select class="form-select" id="userExperience" required>
+                            <option value="">Select your experience level</option>
+                            <option value="0-2">0-2 years (Entry Level)</option>
+                            <option value="3-5">3-5 years (Mid Level)</option>
+                            <option value="6-10">6-10 years (Senior Level)</option>
+                            <option value="10+">10+ years (Expert Level)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">What's your main goal?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" class="radio-input" id="goal1" name="userGoal" value="promotion" required>
+                                <label class="radio-label" for="goal1">Get Promoted</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" class="radio-input" id="goal2" name="userGoal" value="switch" required>
+                                <label class="radio-label" for="goal2">Switch Careers</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" class="radio-input" id="goal3" name="userGoal" value="skills" required>
+                                <label class="radio-label" for="goal3">Learn New Skills</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" class="radio-input" id="goal4" name="userGoal" value="leadership" required>
+                                <label class="radio-label" for="goal4">Become a Leader</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Start My Assessment</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Assessment Section -->
+    <section id="assessmentSection" class="app-section">
+        <div class="assessment-container">
+            <div class="assessment-card">
+                <div class="assessment-header">
+                    <h2 class="assessment-title">Skills Assessment</h2>
+                    <p id="assessmentCategoryTitle">Evaluating your capabilities</p>
+                </div>
+                
+                <div class="assessment-progress">
+                    <span class="progress-text">Question <span id="currentQuestion">1</span> of <span id="totalQuestions">20</span></span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="progressBar" style="width: 5%"></div>
+                    </div>
+                    <span class="progress-text"><span id="progressPercentage">5</span>%</span>
+                </div>
+                
+                <div id="questionContainer">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+                
+                <div class="assessment-navigation">
+                    <button class="btn-secondary" id="prevBtn" onclick="previousQuestion()" style="display: none;">Previous</button>
+                    <button class="btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next Question</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Section -->
+    <section id="loadingSection" class="app-section">
+        <div class="assessment-container">
+            <div class="assessment-card">
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <h2 class="loading-text">AI is analyzing your responses...</h2>
+                    <p style="color: var(--text); margin-top: 1rem;">Creating your personalized skill profile</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="resultsSection" class="app-section">
+        <div class="results-container">
+            <div class="results-card">
+                <div class="results-icon">🎉</div>
+                <h1 class="results-title">Assessment Complete!</h1>
+                <p class="results-subtitle">Here's your personalized skill profile</p>
+                
+                <div class="results-grid" id="resultsGrid">
+                    <!-- Results will be dynamically inserted here -->
+                </div>
+                
+                <button class="btn-primary" onclick="showDashboard()">View My Dashboard</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboardSection" class="app-section">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <div class="user-welcome">
+                    <div class="user-info">
+                        <div class="user-avatar" id="userAvatar">JD</div>
+                        <div class="user-details">
+                            <h1>Welcome back, <span id="dashboardUserName">John</span>!</h1>
+                            <p><span id="dashboardUserRole">Software Developer</span> • <span id="dashboardUserExp">3-5 years experience</span></p>
+                        </div>
+                    </div>
+                    <div class="overall-score">
+                        <div class="score-value" id="overallScore">0</div>
+                        <div class="score-label">Overall Skill Score</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 style="margin: 2rem 0 1rem; color: var(--dark);">Your Skill Profile</h2>
+            <div class="skills-grid" id="skillsGrid">
+                <!-- Skills will be dynamically inserted here -->
+            </div>
+
+            <div class="recommendations-section">
+                <div class="recommendations-header">
+                    <h2 class="recommendations-title">Personalized Recommendations</h2>
+                    <span style="color: var(--text);">Based on your assessment</span>
+                </div>
+                <div class="recommendations-grid" id="recommendationsGrid">
+                    <!-- Recommendations will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Global state
+        let userData = {
+            name: '',
+            role: '',
+            experience: '',
+            goal: '',
+            answers: [],
+            skillScores: {},
+            overallScore: 0
+        };
+
+        let currentQuestionIndex = 0;
+        let assessmentQuestions = [];
+
+        // All possible assessment questions organized by category
+        const questionBank = {
+            technical: [
+                {
+                    question: "How comfortable are you with learning new programming languages or tools?",
+                    options: [
+                        "I can pick up new languages within days",
+                        "I learn them as needed for projects",
+                        "I prefer to master what I know first",
+                        "I find it challenging to learn new tools"
+                    ]
+                },
+                {
+                    question: "How do you approach debugging complex technical issues?",
+                    options: [
+                        "I systematically isolate and test each component",
+                        "I use debugging tools and logs effectively",
+                        "I usually find solutions through trial and error",
+                        "I often need help from senior colleagues"
+                    ]
+                },
+                {
+                    question: "What's your experience with system design and architecture?",
+                    options: [
+                        "I architect large-scale distributed systems",
+                        "I design components and microservices",
+                        "I implement designs created by others",
+                        "I'm still learning system design basics"
+                    ]
+                },
+                {
+                    question: "How well do you understand data structures and algorithms?",
+                    options: [
+                        "I can implement complex algorithms from scratch",
+                        "I know when and how to use common patterns",
+                        "I understand basics like arrays and loops",
+                        "I need to improve my fundamentals"
+                    ]
+                }
+            ],
+            leadership: [
+                {
+                    question: "How do you handle leading a team project?",
+                    options: [
+                        "I naturally take charge and delegate effectively",
+                        "I lead when asked and do my best",
+                        "I prefer to contribute as a team member",
+                        "I'm not comfortable in leadership roles yet"
+                    ]
+                },
+                {
+                    question: "How do you approach mentoring junior colleagues?",
+                    options: [
+                        "I have a structured mentorship approach",
+                        "I enjoy helping others when they ask",
+                        "I help occasionally but prefer to focus on my work",
+                        "I'm still building my mentoring skills"
+                    ]
+                },
+                {
+                    question: "How do you handle team conflicts?",
+                    options: [
+                        "I mediate and find win-win solutions",
+                        "I try to help resolve issues when involved",
+                        "I prefer to stay neutral and let others handle it",
+                        "I find conflict situations stressful"
+                    ]
+                },
+                {
+                    question: "How do you motivate team members?",
+                    options: [
+                        "I understand individual motivations and adapt my approach",
+                        "I use recognition and positive feedback",
+                        "I lead by example and work hard",
+                        "I'm learning how to motivate others"
+                    ]
+                }
+            ],
+            communication: [
+                {
+                    question: "How comfortable are you presenting to large audiences?",
+                    options: [
+                        "I regularly present to executives and large groups",
+                        "I can present when prepared",
+                        "I prefer small group discussions",
+                        "Public speaking makes me very nervous"
+                    ]
+                },
+                {
+                    question: "How do you handle giving difficult feedback?",
+                    options: [
+                        "I deliver it constructively with specific examples",
+                        "I'm honest but try to be kind",
+                        "I often sugar-coat to avoid hurt feelings",
+                        "I avoid giving negative feedback"
+                    ]
+                },
+                {
+                    question: "How well do you explain technical concepts to non-technical people?",
+                    options: [
+                        "I use analogies and visuals to make it clear",
+                        "I can simplify most concepts well",
+                        "I sometimes struggle to avoid jargon",
+                        "I find it very difficult"
+                    ]
+                },
+                {
+                    question: "How do you handle written communication?",
+                    options: [
+                        "I write clear, concise documentation and emails",
+                        "My writing is generally good",
+                        "I prefer verbal communication",
+                        "I struggle with professional writing"
+                    ]
+                }
+            ],
+            problemSolving: [
+                {
+                    question: "How do you approach complex problems with no clear solution?",
+                    options: [
+                        "I break them down systematically and explore multiple approaches",
+                        "I research and look for similar solved problems",
+                        "I try different things until something works",
+                        "I usually need guidance on complex problems"
+                    ]
+                },
+                {
+                    question: "How do you handle working with incomplete information?",
+                    options: [
+                        "I make informed assumptions and validate as I go",
+                        "I gather what I can and do my best",
+                        "I prefer to wait for complete information",
+                        "I find it very challenging"
+                    ]
+                },
+                {
+                    question: "How creative are you in finding solutions?",
+                    options: [
+                        "I often find innovative solutions others miss",
+                        "I can think outside the box when needed",
+                        "I prefer proven, standard solutions",
+                        "I struggle with creative thinking"
+                    ]
+                },
+                {
+                    question: "How do you validate your solutions?",
+                    options: [
+                        "I use data, testing, and peer review",
+                        "I test thoroughly before implementing",
+                        "I do basic testing",
+                        "I often miss edge cases"
+                    ]
+                }
+            ],
+            collaboration: [
+                {
+                    question: "How well do you work in cross-functional teams?",
+                    options: [
+                        "I excel at bridging different departments",
+                        "I work well with diverse teams",
+                        "I prefer working with similar roles",
+                        "I find cross-functional work challenging"
+                    ]
+                },
+                {
+                    question: "How do you handle remote collaboration?",
+                    options: [
+                        "I'm highly effective with async communication",
+                        "I manage remote work well",
+                        "I prefer in-person collaboration",
+                        "Remote work is difficult for me"
+                    ]
+                },
+                {
+                    question: "How do you share knowledge with your team?",
+                    options: [
+                        "I document everything and conduct knowledge sessions",
+                        "I share when asked",
+                        "I focus mainly on my own tasks",
+                        "I need to improve at knowledge sharing"
+                    ]
+                },
+                {
+                    question: "How do you handle receiving feedback?",
+                    options: [
+                        "I actively seek it and implement improvements",
+                        "I appreciate constructive feedback",
+                        "I listen but don't always agree",
+                        "I find feedback difficult to accept"
+                    ]
+                }
+            ]
+        };
+
+        // Generate assessment questions based on user's goal
+        function generateAssessmentQuestions() {
+            assessmentQuestions = [];
+            
+            // Add questions from each category
+            Object.keys(questionBank).forEach(category => {
+                // Select 4 questions from each category
+                const categoryQuestions = questionBank[category].map((q, index) => ({
+                    ...q,
+                    category,
+                    id: `${category}_${index}`
+                }));
+                assessmentQuestions.push(...categoryQuestions);
+            });
+            
+            // Shuffle questions for variety
+            assessmentQuestions = assessmentQuestions.sort(() => Math.random() - 0.5);
+            
+            return assessmentQuestions;
+        }
+
+        // Handle onboarding form submission
+        document.getElementById('onboardingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect user data
+            userData.name = document.getElementById('userName').value;
+            userData.role = document.getElementById('userRole').value;
+            userData.experience = document.getElementById('userExperience').value;
+            userData.goal = document.querySelector('input[name="userGoal"]:checked').value;
+            
+            // Generate questions
+            generateAssessmentQuestions();
+            
+            // Start assessment
+            showSection('assessmentSection');
+            loadQuestion(0);
+            
+            // Show navigation bar
+            document.getElementById('navBar').classList.add('active');
+            
+            // Show toast
+            showToast('Welcome ' + userData.name + '! Let\'s assess your skills.', 'success');
+        });
+
+        // Load a question
+        function loadQuestion(index) {
+            if (index >= assessmentQuestions.length) {
+                completeAssessment();
+                return;
+            }
+            
+            const question = assessmentQuestions[index];
+            const container = document.getElementById('questionContainer');
+            
+            container.innerHTML = `
+                <div class="question-card">
+                    <span class="question-number">Question ${index + 1}</span>
+                    <h3 class="question-text">${question.question}</h3>
+                    <div class="answer-options">
+                        ${question.options.map((option, i) => `
+                            <div class="answer-option" onclick="selectAnswer(${i}, this)">
+                                <div class="answer-radio"></div>
+                                <span>${option}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Update progress
+            updateProgress(index);
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').style.display = index > 0 ? 'block' : 'none';
+            document.getElementById('nextBtn').disabled = true;
+            
+            // Update category title
+            const categoryTitles = {
+                technical: "Technical Skills Assessment",
+                leadership: "Leadership Capabilities",
+                communication: "Communication Skills",
+                problemSolving: "Problem-Solving Abilities",
+                collaboration: "Collaboration & Teamwork"
+            };
+            document.getElementById('assessmentCategoryTitle').textContent = 
+                categoryTitles[question.category] || "Skills Assessment";
+        }
+
+        // Select an answer
+        function selectAnswer(answerIndex, element) {
+            // Remove previous selection
+            document.querySelectorAll('.answer-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selection
+            element.classList.add('selected');
+            
+            // Store answer
+            userData.answers[currentQuestionIndex] = {
+                questionId: assessmentQuestions[currentQuestionIndex].id,
+                category: assessmentQuestions[currentQuestionIndex].category,
+                answerIndex: answerIndex,
+                score: (3 - answerIndex) * 25 // Convert to score (0-3 -> 100-25)
+            };
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        // Navigate to next question
+        function nextQuestion() {
+            if (currentQuestionIndex < assessmentQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+                
+                // Change button text for last question
+                if (currentQuestionIndex === assessmentQuestions.length - 1) {
+                    document.getElementById('nextBtn').textContent = 'Complete Assessment';
+                }
+            } else {
+                completeAssessment();
+            }
+        }
+
+        // Navigate to previous question
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+                document.getElementById('nextBtn').textContent = 'Next Question';
+            }
+        }
+
+        // Update progress bar
+        function updateProgress(index) {
+            const progress = ((index + 1) / assessmentQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressPercentage').textContent = Math.round(progress);
+            document.getElementById('currentQuestion').textContent = index + 1;
+            document.getElementById('totalQuestions').textContent = assessmentQuestions.length;
+        }
+
+        // Complete assessment
+        function completeAssessment() {
+            // Show loading
+            showSection('loadingSection');
+            
+            // Calculate scores
+            setTimeout(() => {
+                calculateScores();
+                showSection('resultsSection');
+                displayResults();
+            }, 3000);
+        }
+
+        // Calculate skill scores
+        function calculateScores() {
+            const categoryScores = {};
+            const categoryCounts = {};
+            
+            // Group scores by category
+            userData.answers.forEach(answer => {
+                if (!categoryScores[answer.category]) {
+                    categoryScores[answer.category] = 0;
+                    categoryCounts[answer.category] = 0;
+                }
+                categoryScores[answer.category] += answer.score;
+                categoryCounts[answer.category]++;
+            });
+            
+            // Calculate average scores
+            Object.keys(categoryScores).forEach(category => {
+                userData.skillScores[category] = Math.round(
+                    categoryScores[category] / categoryCounts[category]
+                );
+            });
+            
+            // Calculate overall score
+            const scores = Object.values(userData.skillScores);
+            userData.overallScore = Math.round(
+                scores.reduce((a, b) => a + b, 0) / scores.length
+            );
+        }
+
+        // Display results
+        function displayResults() {
+            const resultsGrid = document.getElementById('resultsGrid');
+            
+            // Create result items for each skill category
+            const categoryNames = {
+                technical: 'Technical Skills',
+                leadership: 'Leadership',
+                communication: 'Communication',
+                problemSolving: 'Problem Solving',
+                collaboration: 'Collaboration'
+            };
+            
+            resultsGrid.innerHTML = `
+                <div class="result-item">
+                    <div class="result-value">${userData.overallScore}</div>
+                    <div class="result-label">Overall Score</div>
+                </div>
+                ${Object.keys(userData.skillScores).map(category => `
+                    <div class="result-item">
+                        <div class="result-value">${userData.skillScores[category]}</div>
+                        <div class="result-label">${categoryNames[category]}</div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            showSection('dashboardSection');
+            populateDashboard();
+            showToast('Dashboard loaded successfully!', 'success');
+        }
+
+        // Populate dashboard with user data
+        function populateDashboard() {
+            // Update user info
+            const initials = userData.name.split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('dashboardUserName').textContent = userData.name.split(' ')[0];
+            document.getElementById('dashboardUserRole').textContent = userData.role;
+            document.getElementById('dashboardUserExp').textContent = userData.experience + ' years experience';
+            
+            // Animate overall score
+            animateNumber(document.getElementById('overallScore'), 0, userData.overallScore, 1500);
+            
+            // Populate skills grid
+            const skillsGrid = document.getElementById('skillsGrid');
+            const categoryData = {
+                technical: { icon: '💻', name: 'Technical Skills' },
+                leadership: { icon: '👔', name: 'Leadership' },
+                communication: { icon: '💬', name: 'Communication' },
+                problemSolving: { icon: '🧩', name: 'Problem Solving' },
+                collaboration: { icon: '🤝', name: 'Collaboration' }
+            };
+            
+            skillsGrid.innerHTML = Object.keys(userData.skillScores).map(category => {
+                const score = userData.skillScores[category];
+                const level = getSkillLevel(score);
+                const data = categoryData[category];
+                
+                return `
+                    <div class="skill-card">
+                        <div class="skill-header">
+                            <div class="skill-name">
+                                <span>${data.icon}</span>
+                                <span>${data.name}</span>
+                            </div>
+                            <div class="skill-score">${score}</div>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: ${score}%"></div>
+                        </div>
+                        <div class="skill-level">${level}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Generate personalized recommendations
+            generateRecommendations();
+        }
+
+        // Get skill level based on score
+        function getSkillLevel(score) {
+            if (score >= 90) return 'Expert Level';
+            if (score >= 75) return 'Advanced';
+            if (score >= 60) return 'Proficient';
+            if (score >= 40) return 'Developing';
+            return 'Beginner';
+        }
+
+        // Generate personalized recommendations
+        function generateRecommendations() {
+            const recommendations = [];
+            
+            // Find weakest skills
+            const sortedSkills = Object.entries(userData.skillScores)
+                .sort((a, b) => a[1] - b[1]);
+            
+            const weakestSkill = sortedSkills[0];
+            const secondWeakest = sortedSkills[1];
+            
+            // Comprehensive recommendations with real resources
+            const recommendationTemplates = {
+                technical: [
+                    {
+                        type: 'Course',
+                        title: 'Advanced Programming Patterns',
+                        description: 'Master design patterns and clean code principles with hands-on projects',
+                        duration: '20 hours',
+                        difficulty: 3,
+                        platform: 'Coursera',
+                        link: 'https://www.coursera.org/search?query=design%20patterns',
+                        price: 'Free audit / $49/mo'
+                    },
+                    {
+                        type: 'Certification',
+                        title: 'AWS Cloud Practitioner',
+                        description: 'Get certified in cloud fundamentals with Amazon Web Services',
+                        duration: '40 hours',
+                        difficulty: 4,
+                        platform: 'AWS Training',
+                        link: 'https://aws.amazon.com/certification/certified-cloud-practitioner/',
+                        price: '$100 exam fee'
+                    },
+                    {
+                        type: 'Interactive',
+                        title: 'LeetCode Problem Solving',
+                        description: 'Practice coding challenges to improve algorithmic thinking',
+                        duration: 'Self-paced',
+                        difficulty: 3,
+                        platform: 'LeetCode',
+                        link: 'https://leetcode.com/',
+                        price: 'Free / Premium $35/mo'
+                    }
+                ],
+                leadership: [
+                    {
+                        type: 'Workshop',
+                        title: 'Leadership Fundamentals',
+                        description: 'Harvard Business School online leadership essentials course',
+                        duration: '6 weeks',
+                        difficulty: 2,
+                        platform: 'HBS Online',
+                        link: 'https://online.hbs.edu/courses/leadership-principles/',
+                        price: '$1,000'
+                    },
+                    {
+                        type: 'Book + Course',
+                        title: 'Crucial Conversations Training',
+                        description: 'Learn to handle difficult conversations and lead with confidence',
+                        duration: '12 hours',
+                        difficulty: 3,
+                        platform: 'VitalSmarts',
+                        link: 'https://www.udemy.com/topic/crucial-conversations/',
+                        price: '$15-50'
+                    },
+                    {
+                        type: 'Free Resource',
+                        title: 'Google Manager Training',
+                        description: "Google's re:Work guide with tools and lessons for new managers",
+                        duration: 'Self-paced',
+                        difficulty: 2,
+                        platform: 'Google re:Work',
+                        link: 'https://rework.withgoogle.com/subjects/managers/',
+                        price: 'Free'
+                    }
+                ],
+                communication: [
+                    {
+                        type: 'Course',
+                        title: 'Business Writing Specialization',
+                        description: 'Improve written communication for emails, reports, and presentations',
+                        duration: '4 months',
+                        difficulty: 2,
+                        platform: 'Coursera',
+                        link: 'https://www.coursera.org/specializations/business-writing',
+                        price: '$49/month'
+                    },
+                    {
+                        type: 'Workshop',
+                        title: 'Public Speaking with Toastmasters',
+                        description: 'Join a local chapter to practice speaking in a supportive environment',
+                        duration: 'Ongoing',
+                        difficulty: 3,
+                        platform: 'Toastmasters',
+                        link: 'https://www.toastmasters.org/',
+                        price: '$45-60/6 months'
+                    },
+                    {
+                        type: 'Interactive',
+                        title: 'Grammarly Writing Assistant',
+                        description: 'AI-powered tool to improve your writing in real-time',
+                        duration: 'Daily use',
+                        difficulty: 1,
+                        platform: 'Grammarly',
+                        link: 'https://www.grammarly.com/',
+                        price: 'Free / Premium $12/mo'
+                    }
+                ],
+                problemSolving: [
+                    {
+                        type: 'Course',
+                        title: 'Critical Thinking Masterclass',
+                        description: 'Stanford course on structured problem-solving and decision making',
+                        duration: '8 weeks',
+                        difficulty: 2,
+                        platform: 'edX',
+                        link: 'https://www.edx.org/learn/critical-thinking-skills',
+                        price: 'Free audit / $150 certificate'
+                    },
+                    {
+                        type: 'Book',
+                        title: 'Thinking, Fast and Slow',
+                        description: 'Nobel laureate Daniel Kahneman\'s guide to better decision making',
+                        duration: '10-15 hours',
+                        difficulty: 3,
+                        platform: 'Amazon/Audible',
+                        link: 'https://www.amazon.com/Thinking-Fast-Slow-Daniel-Kahneman/dp/0374533555',
+                        price: '$15-20'
+                    },
+                    {
+                        type: 'Game-Based',
+                        title: 'Brilliant.org Problem Solving',
+                        description: 'Interactive puzzles and challenges to build logical thinking',
+                        duration: '15 min/day',
+                        difficulty: 2,
+                        platform: 'Brilliant',
+                        link: 'https://brilliant.org/',
+                        price: 'Free trial / $24/mo'
+                    }
+                ],
+                collaboration: [
+                    {
+                        type: 'Workshop',
+                        title: 'Team Dynamics & Trust',
+                        description: 'Google\'s Project Aristotle findings on building effective teams',
+                        duration: '3 hours',
+                        difficulty: 1,
+                        platform: 'Google re:Work',
+                        link: 'https://rework.withgoogle.com/guides/understanding-team-effectiveness/steps/introduction/',
+                        price: 'Free'
+                    },
+                    {
+                        type: 'Course',
+                        title: 'Remote Work Collaboration',
+                        description: 'GitLab\'s comprehensive guide to remote team collaboration',
+                        duration: 'Self-paced',
+                        difficulty: 2,
+                        platform: 'GitLab',
+                        link: 'https://about.gitlab.com/company/culture/all-remote/guide/',
+                        price: 'Free'
+                    },
+                    {
+                        type: 'Tool + Training',
+                        title: 'Slack for Teams Certification',
+                        description: 'Master async communication and team collaboration tools',
+                        duration: '4 hours',
+                        difficulty: 1,
+                        platform: 'Slack',
+                        link: 'https://slack.com/certification',
+                        price: 'Free'
+                    }
+                ]
+            };
+            
+            // Add recommendations for weakest skills
+            if (recommendationTemplates[weakestSkill[0]]) {
+                recommendations.push(...recommendationTemplates[weakestSkill[0]]);
+            }
+            if (recommendationTemplates[secondWeakest[0]]) {
+                recommendations.push(...recommendationTemplates[secondWeakest[0]].slice(0, 2));
+            }
+            
+            // Add goal-specific recommendation
+            const goalRecommendations = {
+                promotion: {
+                    type: 'Program',
+                    title: 'LinkedIn Learning Leadership Path',
+                    description: 'Comprehensive leadership development program with certificates',
+                    duration: '20 hours',
+                    difficulty: 3,
+                    platform: 'LinkedIn Learning',
+                    link: 'https://www.linkedin.com/learning/paths/become-a-manager',
+                    price: 'Free trial / $30/mo'
+                },
+                switch: {
+                    type: 'Bootcamp',
+                    title: 'Career Pivot Roadmap',
+                    description: 'Structured career transition planning and skill development',
+                    duration: '12 weeks',
+                    difficulty: 4,
+                    platform: 'Springboard',
+                    link: 'https://www.springboard.com/',
+                    price: '$500-700/mo'
+                },
+                skills: {
+                    type: 'Learning Platform',
+                    title: 'Pluralsight Skill IQ',
+                    description: 'Assess and develop technical skills with personalized paths',
+                    duration: 'Self-paced',
+                    difficulty: 2,
+                    platform: 'Pluralsight',
+                    link: 'https://www.pluralsight.com/product/skill-iq',
+                    price: '$29/mo'
+                },
+                leadership: {
+                    type: 'Executive Program',
+                    title: 'Yale Leadership Excellence',
+                    description: 'Ivy League online certificate in organizational leadership',
+                    duration: '6 weeks',
+                    difficulty: 4,
+                    platform: 'Coursera',
+                    link: 'https://www.coursera.org/certificates/organizational-leadership',
+                    price: '$2,000'
+                }
+            };
+            
+            if (goalRecommendations[userData.goal]) {
+                recommendations.unshift(goalRecommendations[userData.goal]);
+            }
+            
+            // Add some free bonus resources based on overall score
+            if (userData.overallScore < 60) {
+                recommendations.push({
+                    type: 'Free Starter Kit',
+                    title: 'Khan Academy Career Essentials',
+                    description: 'Free foundational courses in various professional skills',
+                    duration: 'Self-paced',
+                    difficulty: 1,
+                    platform: 'Khan Academy',
+                    link: 'https://www.khanacademy.org/college-careers-more',
+                    price: 'Completely Free'
+                });
+            }
+            
+            // Display recommendations with links
+            const recommendationsGrid = document.getElementById('recommendationsGrid');
+            recommendationsGrid.innerHTML = recommendations.slice(0, 6).map(rec => `
+                <div class="recommendation-card" style="cursor: pointer;">
+                    <span class="rec-type">${rec.type}</span>
+                    <h3 class="rec-title">${rec.title}</h3>
+                    <p class="rec-description">${rec.description}</p>
+                    <div style="margin: 1rem 0; padding: 0.75rem; background: var(--light); border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600; color: var(--primary);">${rec.platform}</span>
+                            <span style="color: var(--success); font-weight: 600;">${rec.price}</span>
+                        </div>
+                        <button onclick="window.open('${rec.link}', '_blank')" 
+                                style="width: 100%; padding: 0.5rem; background: var(--gradient); color: white; 
+                                       border: none; border-radius: 6px; font-weight: 600; cursor: pointer;
+                                       transition: all 0.3s ease;"
+                                onmouseover="this.style.transform='translateY(-2px)'"
+                                onmouseout="this.style.transform='translateY(0)'">
+                            Visit ${rec.platform} →
+                        </button>
+                    </div>
+                    <div class="rec-meta">
+                        <span>⏱️ ${rec.duration}</span>
+                        <div class="rec-difficulty">
+                            ${Array(5).fill('').map((_, i) => `
+                                <span class="difficulty-dot ${i < rec.difficulty ? 'filled' : ''}"></span>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add a helpful note at the bottom
+            const noteDiv = document.createElement('div');
+            noteDiv.style.cssText = 'margin-top: 1.5rem; padding: 1rem; background: rgba(99, 102, 241, 0.1); border-radius: 12px; text-align: center; color: var(--dark);';
+            noteDiv.innerHTML = `
+                <p style="margin-bottom: 0.5rem;"><strong>💡 Pro Tip:</strong> Start with one resource that matches your current skill level.</p>
+                <p style="font-size: 0.9rem; color: var(--text);">Most platforms offer free trials or audit options - try before you buy!</p>
+            `;
+            recommendationsGrid.parentElement.appendChild(noteDiv);
+        }
+
+        // Utility function to show sections
+        function showSection(sectionId) {
+            document.querySelectorAll('.app-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Utility function to show toast notifications
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span class="toast-icon">
+                    ${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}
+                </span>
+                <span class="toast-message">${message}</span>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOutDown 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Animate number counting
+        function animateNumber(element, start, end, duration) {
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= end) {
+                    element.textContent = end;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.round(current);
+                }
+            }, 16);
+        }
+
+        // Retake assessment
+        function retakeAssessment() {
+            if (confirm('Are you sure you want to retake the assessment? Your current scores will be replaced.')) {
+                // Reset assessment state
+                currentQuestionIndex = 0;
+                userData.answers = [];
+                userData.skillScores = {};
+                userData.overallScore = 0;
+                
+                // Generate new questions
+                generateAssessmentQuestions();
+                
+                // Reset progress bar and button
+                document.getElementById('progressBar').style.width = '5%';
+                document.getElementById('progressPercentage').textContent = '5';
+                document.getElementById('currentQuestion').textContent = '1';
+                document.getElementById('totalQuestions').textContent = assessmentQuestions.length;
+                document.getElementById('nextBtn').textContent = 'Next Question';
+                document.getElementById('nextBtn').disabled = true;
+                document.getElementById('prevBtn').style.display = 'none';
+                
+                // Show assessment section and load first question
+                showSection('assessmentSection');
+                loadQuestion(0);
+                
+                showToast('Starting fresh assessment. Good luck!', 'success');
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Reset all data
+                userData = {
+                    name: '',
+                    role: '',
+                    experience: '',
+                    goal: '',
+                    answers: [],
+                    skillScores: {},
+                    overallScore: 0
+                };
+                currentQuestionIndex = 0;
+                assessmentQuestions = [];
+                
+                // Reset form
+                document.getElementById('onboardingForm').reset();
+                
+                // Hide nav and show welcome
+                document.getElementById('navBar').classList.remove('active');
+                showSection('welcomeSection');
+                
+                showToast('You have been logged out successfully.', 'info');
+            }
+        }
+
+        // Add animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideOutDown {
+                from {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateY(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
