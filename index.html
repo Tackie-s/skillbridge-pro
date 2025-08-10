@@ -1111,13 +1111,13 @@
                     <div class="user-info">
                         <div class="user-avatar" id="userAvatar">JD</div>
                         <div class="user-details">
-                            <h1>Welcome back, <span id="dashboardUserName">John</span>!</h1>
+                            <h1>Welcome, <span id="dashboardUserName">John</span>! 🎉</h1>
                             <p><span id="dashboardUserRole">Software Developer</span> • <span id="dashboardUserExp">3-5 years experience</span></p>
                         </div>
                     </div>
                     <div class="overall-score">
                         <div class="score-value" id="overallScore">0</div>
-                        <div class="score-label">Overall Skill Score</div>
+                        <div class="score-label">Your Skill Score</div>
                     </div>
                 </div>
             </div>
@@ -1565,7 +1565,7 @@
         function showDashboard() {
             showSection('dashboardSection');
             populateDashboard();
-            showToast('Dashboard loaded successfully!', 'success');
+            showToast('Congratulations on completing your assessment! 🎊', 'success');
         }
 
         // Populate dashboard with user data
@@ -1613,6 +1613,673 @@
             }).join('');
             
             // Generate personalized recommendations
+        function generateRecommendations() {
+            const recommendations = [];
+            
+            // Find weakest skills
+            const sortedSkills = Object.entries(userData.skillScores)
+                .sort((a, b) => a[1] - b[1]);
+            
+            const weakestSkill = sortedSkills[0];
+            const secondWeakest = sortedSkills[1];
+            
+            // Massive library of FREE resources organized by skill
+            const recommendationTemplates = {
+                technical: [
+                    // FREE Resources
+                    {
+                        type: '🆓 FREE Course',
+                        title: 'CS50 - Harvard\'s Intro to Computer Science',
+                        description: 'World-class computer science education from Harvard, completely free',
+                        duration: '12 weeks',
+                        difficulty: 3,
+                        platform: 'Harvard/edX',
+                        link: 'https://www.edx.org/learn/computer-science/harvard-university-cs50-s-introduction-to-computer-science',
+                        price: 'FREE (Certificate $199 optional)'
+                    },
+                    {
+                        type: '🆓 FREE Platform',
+                        title: 'freeCodeCamp Full Stack Path',
+                        description: 'Learn HTML, CSS, JavaScript, React, Node.js, and more with certifications',
+                        duration: '300+ hours',
+                        difficulty: 2,
+                        platform: 'freeCodeCamp',
+                        link: 'https://www.freecodecamp.org/',
+                        price: 'Completely FREE'
+                    },
+                    {
+                        type: '🆓 FREE Practice',
+                        title: 'The Odin Project',
+                        description: 'Full stack web development curriculum used by thousands',
+                        duration: 'Self-paced',
+                        difficulty: 3,
+                        platform: 'The Odin Project',
+                        link: 'https://www.theodinproject.com/',
+                        price: 'Completely FREE'
+                    },
+                    {
+                        type: '🆓 FREE Tutorial',
+                        title: 'MDN Web Docs Learning Path',
+                        description: 'Mozilla\'s comprehensive web development tutorials and references',
+                        duration: 'Self-paced',
+                        difficulty: 2,
+                        platform: 'Mozilla',
+                        link: 'https://developer.mozilla.org/en-US/docs/Learn',
+                        price: 'Completely FREE'
+                    },
+                    {
+                        type: '🆓 FREE Course',
+                        title: 'Python for Everybody',
+                        description: 'University of Michigan\'s popular Python course with free certificate',
+                        duration: '8 months',
+                        difficulty: 1,
+                        platform: 'Coursera/Michigan',
+                        link: 'https://www.py4e.com/',
+                        price: 'FREE (Coursera cert optional)'
+                    },
+                    {
+                        type: '🆓 FREE Practice',
+                        title: 'Codecademy Free Tier',
+                        description: 'Interactive coding lessons in multiple languages',
+                        duration: 'Self-paced',
+                        difficulty: 1,
+                        platform: 'Codecademy',
+                        link: 'https://www.codecademy.com/catalog/subject/free',
+                        price: 'FREE tier available'
+                    },
+                    {
+                        type: '🆓 FREE Resource',
+                        title: 'GitHub Skills',
+                        description: 'Learn Git and GitHub with interactive courses directly on GitHub',
+                        duration: '4-8 hours',
+                        difficulty: 2,
+                        platform: 'GitHub',
+                        link: 'https://skills.github.com/',
+                        price: 'Completely FREE'
+                    },
+                    {
+                        type: '🆓 FREE Video Course',
+                        title: 'MIT OpenCourseWare - Computer Science',
+                        description: 'Actual MIT computer science courses available free online',
+                        duration: 'Full semester',
+                        difficulty: 4,
+                        platform: 'MIT',
+                        link: 'https://ocw.mit.edu/collections/introductory-programming/',
+                        price: 'Completely FREE'
+                    }
+                ],
+                leadership: [
+                    // FREE Leadership Resources
+                    {
+                        type: '🆓 FREE Guide',
+                        title: 'Google\'s Manager Training Resources',
+                        description: 'Research-based management training from Google\'s People Operations',
+                        duration: 'Self-paced',
+                        difficulty: 2,
+                        platform: 'Google re:Work',
+                        link: 'https://rework.withgoogle.com/guides/managers-develop-and-support-managers/steps/introduction/',
+                        price: 'Completely FREE'
+                    },
+                    {
+                        type: '🆓 FREE Course',
+                        title: 'Leadership Training from UN',
+                        description: 'United Nations free leadership and management courses',
+                        duration: '4-6 weeks',
+                        difficulty: 2,
+                        platform: 'UN/Coursera',
+                        link: 'https://www.coursera.org/learn/leadership-collaboration',
+                        price: 'FREE audit'
+                    },
+                    {
+                        type: '🆓 FREE Workshop',
+                        title: 'Simon Sinek\'s Leadership Classes',
+                        description: 'Free leadership videos and resources from bestselling author',
+                        duration: '10+ hours',
+                        difficulty: 2,
+                        platform: 'YouTube/SimonSinek',
+                        link: 'https://www.youtube.com/c/SimonSinek',
+                        price: 'FREE resources'
+                    },
+                    {
+                        type: '🆓 FREE Course',
+                        title: 'Developing Your Leadership Style',
+                        description: 'Leadership and management courses from top universities',
+                        duration: '4 weeks',
+                        difficulty: 3,
+                        platform: 'Coursera',
+                        link: 'https://www.coursera.org/browse/business/leadership-and-management',
+                        price: 'FREE audit'
+                    },
+                    {
+                        type: '🆓 FREE Podcast',
+                        title: 'HBR IdeaCast Leadership Series',
+                        description: 'Harvard Business Review\'s weekly leadership insights podcast',
+                        duration: 'Weekly episodes',
+                        difficulty: 2,
+                        platform: 'Harvard Business Review',
+                        link: 'https://hbr.org/2018/01/podcast-ideacast',
+                        price: 'Completely FREE'
+                    },
+                    {
+                        type: '🆓 FREE Book',
+                        title: 'U.S. Army Leadership Field Manual',
+                        description: 'Comprehensive leadership guide used by military leaders',
+                        duration: 'Self-paced reading',
+                        difficulty: 3,
+                        platform: 'U.S. Army',
+                        link: 'https://www.armyupress.army.mil/Portals/7/combat-studies-institute/csi-books/fm6-22.pdf',
+                        price: 'FREE PDF'
+                    },
+                    {
+                        type: '🆓 FREE Videos',
+                        title: 'TED Talks - Leadership Playlist',
+                        description: 'Curated collection of 20+ TED talks on leadership',
+                        duration: '5+ hours',
+                        difficulty: 1,
+                        platform: 'TED',
+                        link: 'https://www.ted.com/playlists/140/how_leaders_inspire',
+                        price: 'Completely FREE'
+                    }
+                ],
+                communication: [
+                    // FREE Communication Resources
+                    {
+                        type: '🆓 FREE Course',
+                        title: 'Business Communication by ASU',
+                        description: 'Arizona State University\'s professional communication course',
+                        duration: '6 weeks',
+                        difficulty: 2,
+                        platform: 'Coursera',
+                        link: 'https://www.coursera.org/learn/business-communication',
+                        price: 'FREE audit'
+                    },
+                    {
+                        type: '🆓 FREE Writing Tool',
+                        title: 'Purdue OWL (Online Writing Lab)',
+                        description: 'Comprehensive writing resources for professional communication',
+                        duration: 'Reference guide',
+                        difficulty: 1,
+                        platform: 'Purdue University',
+                        link: 'https://owl.purdue.edu/owl/general_writing/index.html',
+                        price: 'Completely FREE'
+                    },
+                    {
+                        type: '🆓 FREE Practice',
+                        title: 'Toastmasters Free Resources',
+                        description: 'Public speaking guides, tips, and practice materials',
+                        duration: 'Self-paced',
+                        difficulty: 2,
+                        platform: 'Toastmasters',
+                        link: 'https://www.toastmasters.org/resources',
+                        price: 'FREE resources'
+                    },
+                    {
+                        type: '🆓 FREE Tool',
+                        title: 'Grammarly Free Version',
+                        description: 'AI writing assistant for grammar, spelling, and clarity',
+                        duration: 'Daily use',
+                        difficulty: 1,
+                        platform: 'Grammarly',
+                        link: 'https://www.grammarly.com/',
+                        price: 'FREE version available'
+                    },
+                    {
+                        type: '🆓 FREE Course',
+                        title: 'Effective Communication Skills',
+                        description: 'University of Colorado Boulder\'s communication course',
+                        duration: '4 weeks',
+                        difficulty: 2,
+                        platform: 'Coursera',
+                        link: 'https://www.coursera.org/learn/wharton-communication-skills',
+                        price: 'FREE audit'
+                    },
+                    {
+                        type: '🆓 FREE Videos',
+                        title: 'Charisma on Command YouTube',
+                        description: 'Video lessons on confidence, charisma, and communication',
+                        duration: '100+ hours',
+                        difficulty: 1,
+                        platform: 'YouTube',
+                        link: 'https://www.youtube.com/@Charismaoncommand',
+                        price: 'Completely FREE'
+                    },
+                    {
+                        type: '🆓 FREE Book',
+                        title: 'How to Win Friends - Free Summary',
+                        description: 'Key principles from Dale Carnegie\'s classic communication book',
+                        duration: '1 hour read',
+                        difficulty: 1,
+                        platform: 'Various',
+                        link: 'https://www.hubspot.com/how-to-win-friends-and-influence-people-summary',
+                        price: 'FREE summary'
+                    }
+                ],
+                problemSolving: [
+                    // FREE Problem-Solving Resources
+                    {
+                        type: '🆓 FREE Course',
+                        title: 'Problem Solving Using Computational Thinking',
+                        description: 'University of Michigan\'s systematic problem-solving approach',
+                        duration: '5 weeks',
+                        difficulty: 2,
+                        platform: 'Coursera',
+                        link: 'https://www.coursera.org/learn/compthinking',
+                        price: 'FREE audit'
+                    },
+                    {
+                        type: '🆓 FREE Platform',
+                        title: 'Brilliant.org Free Problems',
+                        description: 'Daily free problems in logic, math, and critical thinking',
+                        duration: 'Daily practice',
+                        difficulty: 2,
+                        platform: 'Brilliant',
+                        link: 'https://brilliant.org/',
+                        price: 'FREE daily problems'
+                    },
+                    {
+                        type: '🆓 FREE Course',
+                        title: 'Critical Thinking & Problem-Solving',
+                        description: 'University of Leeds comprehensive thinking skills course',
+                        duration: '2 weeks',
+                        difficulty: 2,
+                        platform: 'FutureLearn',
+                        link: 'https://www.futurelearn.com/courses/logical-and-critical-thinking',
+                        price: 'FREE access'
+                    },
+                    {
+                        type: '🆓 FREE Resource',
+                        title: 'Art of Problem Solving',
+                        description: 'Free articles and videos on mathematical problem-solving',
+                        duration: 'Self-paced',
+                        difficulty: 3,
+                        platform: 'AoPS',
+                        link: 'https://artofproblemsolving.com/resources',
+                        price: 'FREE resources'
+                    },
+                    {
+                        type: '🆓 FREE Game',
+                        title: 'Lumosity Brain Training',
+                        description: 'Cognitive games to improve problem-solving and memory',
+                        duration: '15 min/day',
+                        difficulty: 1,
+                        platform: 'Lumosity',
+                        link: 'https://www.lumosity.com/',
+                        price: 'FREE limited access'
+                    },
+                    {
+                        type: '🆓 FREE Videos',
+                        title: 'CrashCourse Study Skills',
+                        description: 'YouTube series on critical thinking and problem-solving',
+                        duration: '10 episodes',
+                        difficulty: 1,
+                        platform: 'YouTube/CrashCourse',
+                        link: 'https://www.youtube.com/playlist?list=PL8dPuuaLjXtNcAJRf3bE1IJU6nMfHj86W',
+                        price: 'Completely FREE'
+                    }
+                ],
+                collaboration: [
+                    // FREE Collaboration Resources
+                    {
+                        type: '🆓 FREE Guide',
+                        title: 'GitLab\'s Remote Work Playbook',
+                        description: 'Comprehensive guide to remote team collaboration from GitLab',
+                        duration: 'Reference guide',
+                        difficulty: 2,
+                        platform: 'GitLab',
+                        link: 'https://about.gitlab.com/company/culture/all-remote/guide/',
+                        price: 'Completely FREE'
+                    },
+                    {
+                        type: '🆓 FREE Course',
+                        title: 'Teamwork Skills by University of Colorado',
+                        description: 'Building effective team collaboration skills',
+                        duration: '6 weeks',
+                        difficulty: 2,
+                        platform: 'Coursera',
+                        link: 'https://www.coursera.org/learn/teamwork-skills-effective-communication',
+                        price: 'FREE audit'
+                    },
+                    {
+                        type: '🆓 FREE Resource',
+                        title: 'Atlassian Team Playbook',
+                        description: 'Free plays and practices for building strong teams',
+                        duration: 'Self-paced',
+                        difficulty: 2,
+                        platform: 'Atlassian',
+                        link: 'https://www.atlassian.com/team-playbook',
+                        price: 'Completely FREE'
+                    },
+                    {
+                        type: '🆓 FREE Guide',
+                        title: 'Buffer\'s Remote Work Resources',
+                        description: 'Tools and guides for remote team collaboration',
+                        duration: 'Reference guide',
+                        difficulty: 1,
+                        platform: 'Buffer',
+                        link: 'https://buffer.com/resources/remote-work/',
+                        price: 'Completely FREE'
+                    },
+                    {
+                        type: '🆓 FREE Tool',
+                        title: 'Slack Free Workspace',
+                        description: 'Team collaboration platform with free tier for small teams',
+                        duration: 'Ongoing use',
+                        difficulty: 1,
+                        platform: 'Slack',
+                        link: 'https://slack.com/get-started',
+                        price: 'FREE for small teams'
+                    },
+                    {
+                        type: '🆓 FREE Course',
+                        title: 'Working in Teams',
+                        description: 'University of Queensland\'s team collaboration course',
+                        duration: '2 weeks',
+                        difficulty: 1,
+                        platform: 'edX',
+                        link: 'https://www.edx.org/learn/teamwork',
+                        price: 'FREE audit'
+                    }
+                ]
+            };
+
+            // Additional free general resources
+            const generalFreeResources = [
+                {
+                    type: '🎓 FREE University',
+                    title: 'Khan Academy - Full Curriculum',
+                    description: 'Complete courses in math, science, computing, economics, and more',
+                    duration: 'Self-paced',
+                    difficulty: 1,
+                    platform: 'Khan Academy',
+                    link: 'https://www.khanacademy.org/',
+                    price: 'Completely FREE Forever'
+                },
+                {
+                    type: '📚 FREE Library',
+                    title: 'OpenLearn by Open University',
+                    description: 'Free courses from Open University with certificates',
+                    duration: 'Various',
+                    difficulty: 2,
+                    platform: 'OpenLearn',
+                    link: 'https://www.open.edu/openlearn/',
+                    price: 'FREE with certificates'
+                },
+                {
+                    type: '🎥 FREE Videos',
+                    title: 'YouTube Educational Content',
+                    description: 'Access millions of free educational videos across all subjects',
+                    duration: 'Unlimited',
+                    difficulty: 1,
+                    platform: 'YouTube',
+                    link: 'https://www.youtube.com/edu',
+                    price: 'Completely FREE'
+                },
+                {
+                    type: '📖 FREE Books',
+                    title: 'Project Gutenberg',
+                    description: 'Over 60,000 free ebooks including business and self-help classics',
+                    duration: 'Self-paced',
+                    difficulty: 1,
+                    platform: 'Project Gutenberg',
+                    link: 'https://www.gutenberg.org/',
+                    price: 'Completely FREE'
+                },
+                {
+                    type: '🌍 FREE MOOCs',
+                    title: 'edX Free Course Audit',
+                    description: 'Audit university courses from Harvard, MIT, Berkeley for free',
+                    duration: 'Various',
+                    difficulty: 3,
+                    platform: 'edX',
+                    link: 'https://www.edx.org/free-online-courses',
+                    price: 'FREE audit (cert extra)'
+                }
+            ];
+            
+            // Build personalized recommendation list
+            const allRecommendations = [];
+            
+            // Add 3-4 resources for weakest skill
+            if (recommendationTemplates[weakestSkill[0]]) {
+                allRecommendations.push(...recommendationTemplates[weakestSkill[0]].slice(0, 4));
+            }
+            
+            // Add 2-3 resources for second weakest skill
+            if (recommendationTemplates[secondWeakest[0]]) {
+                allRecommendations.push(...recommendationTemplates[secondWeakest[0]].slice(0, 3));
+            }
+            
+            // Add goal-specific recommendations
+            const goalRecommendations = {
+                promotion: [
+                    {
+                        type: '🎯 Goal: Promotion',
+                        title: 'Career Advancement Resources',
+                        description: 'Free courses and guides for getting promoted',
+                        duration: '10 hours',
+                        difficulty: 2,
+                        platform: 'Coursera',
+                        link: 'https://www.coursera.org/browse/personal-development',
+                        price: 'FREE courses available'
+                    },
+                    {
+                        type: '🎯 Goal: Promotion',
+                        title: 'How to Get Promoted - Free Articles',
+                        description: 'Career advancement strategies and promotion tips',
+                        duration: '2 hours',
+                        difficulty: 2,
+                        platform: 'Indeed Career Guide',
+                        link: 'https://www.indeed.com/career-advice/career-development/how-to-ask-for-a-promotion',
+                        price: 'FREE articles'
+                    }
+                ],
+                switch: [
+                    {
+                        type: '🔄 Career Switch',
+                        title: 'Career Change Roadmap',
+                        description: 'Free career transition planning resources and assessments',
+                        duration: 'Self-paced',
+                        difficulty: 2,
+                        platform: 'MyPlan.com',
+                        link: 'https://www.myplan.com/assess/values/pg1.php',
+                        price: 'FREE assessment'
+                    },
+                    {
+                        type: '🔄 Career Switch',
+                        title: 'Google Career Certificates',
+                        description: 'Professional certificates in high-demand fields',
+                        duration: '3-6 months',
+                        difficulty: 2,
+                        platform: 'Google/Coursera',
+                        link: 'https://grow.google/certificates/',
+                        price: 'Financial aid available'
+                    }
+                ],
+                skills: [
+                    {
+                        type: '🚀 Skill Building',
+                        title: 'Skillshare 1-Month Free',
+                        description: 'Thousands of creative and business skill courses',
+                        duration: 'Unlimited',
+                        difficulty: 1,
+                        platform: 'Skillshare',
+                        link: 'https://www.skillshare.com/',
+                        price: 'FREE 1-month trial'
+                    },
+                    {
+                        type: '🚀 Skill Building',
+                        title: 'LinkedIn Learning Paths',
+                        description: 'Curated learning paths for various skills',
+                        duration: 'Various',
+                        difficulty: 2,
+                        platform: 'LinkedIn',
+                        link: 'https://www.linkedin.com/learning/',
+                        price: 'FREE 1-month trial'
+                    }
+                ],
+                leadership: [
+                    {
+                        type: '👔 Leadership Goal',
+                        title: 'Harvard ManageMentor',
+                        description: 'Leadership topics from Harvard Business Publishing',
+                        duration: '40+ topics',
+                        difficulty: 3,
+                        platform: 'Harvard',
+                        link: 'https://hbr.org/store/landing/hmm',
+                        price: 'FREE trial available'
+                    },
+                    {
+                        type: '👔 Leadership Goal',
+                        title: 'Mind Tools Leadership Resources',
+                        description: 'Free leadership articles, assessments, and tools',
+                        duration: 'Self-paced',
+                        difficulty: 2,
+                        platform: 'Mind Tools',
+                        link: 'https://www.mindtools.com/pages/main/newMN_LDR.htm',
+                        price: 'Many FREE resources'
+                    }
+                ]
+            };
+            
+            if (goalRecommendations[userData.goal]) {
+                allRecommendations.push(...goalRecommendations[userData.goal]);
+            }
+            
+            // Add 2-3 general free resources
+            allRecommendations.push(...generalFreeResources.slice(0, 3));
+            
+            // Display recommendations with better organization
+            const recommendationsGrid = document.getElementById('recommendationsGrid');
+            
+            // Clear existing content
+            recommendationsGrid.innerHTML = '';
+            
+            // Add section title with filter buttons
+            const headerDiv = document.createElement('div');
+            headerDiv.style.cssText = 'grid-column: 1 / -1; margin-bottom: 1rem;';
+            headerDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h3 style="color: var(--dark); margin-bottom: 0.5rem;">
+                            ${allRecommendations.length} Personalized Learning Resources Just for You
+                        </h3>
+                        <p style="color: var(--text); font-size: 0.9rem;">
+                            🎯 Based on your assessment, we recommend focusing on: <strong>${weakestSkill[0]}</strong> and <strong>${secondWeakest[0]}</strong>
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="padding: 0.5rem 1rem; background: var(--success); color: white; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                            ${allRecommendations.filter(r => r.price.includes('FREE')).length} FREE Resources
+                        </span>
+                        <span style="padding: 0.5rem 1rem; background: var(--primary); color: white; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                            Personalized for You
+                        </span>
+                    </div>
+                </div>
+            `;
+            recommendationsGrid.appendChild(headerDiv);
+            
+            // Display all recommendations
+            allRecommendations.forEach((rec, index) => {
+                const card = document.createElement('div');
+                card.className = 'recommendation-card';
+                card.style.cssText = 'cursor: pointer; animation: fadeIn 0.5s ease-out; animation-delay: ' + (index * 0.1) + 's; animation-fill-mode: both;';
+                
+                // Determine badge color based on type
+                let badgeColor = 'var(--primary)';
+                if (rec.type.includes('FREE')) badgeColor = 'var(--success)';
+                if (rec.type.includes('Goal')) badgeColor = 'var(--accent)';
+                if (rec.type.includes('Career Switch')) badgeColor = 'var(--warning)';
+                
+                card.innerHTML = `
+                    <span class="rec-type" style="background: ${badgeColor}; color: white;">${rec.type}</span>
+                    <h3 class="rec-title">${rec.title}</h3>
+                    <p class="rec-description">${rec.description}</p>
+                    <div style="margin: 1rem 0; padding: 0.75rem; background: var(--light); border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600; color: var(--primary);">${rec.platform}</span>
+                            <span style="color: ${rec.price.includes('FREE') ? 'var(--success)' : 'var(--primary)'}; font-weight: 600;">
+                                ${rec.price}
+                            </span>
+                        </div>
+                        <button onclick="window.open('${rec.link}', '_blank'); event.stopPropagation();" 
+                                style="width: 100%; padding: 0.5rem; background: var(--gradient); color: white; 
+                                       border: none; border-radius: 6px; font-weight: 600; cursor: pointer;
+                                       transition: all 0.3s ease;"
+                                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(99, 102, 241, 0.3)';"
+                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                            ${rec.price.includes('FREE') ? '🆓 Access FREE Resource →' : 'Learn More →'}
+                        </button>
+                    </div>
+                    <div class="rec-meta">
+                        <span>⏱️ ${rec.duration}</span>
+                        <div class="rec-difficulty">
+                            ${Array(5).fill('').map((_, i) => `
+                                <span class="difficulty-dot ${i < rec.difficulty ? 'filled' : ''}"></span>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                recommendationsGrid.appendChild(card);
+            });
+            
+            // Add helpful tips section at the bottom
+            const tipsDiv = document.createElement('div');
+            tipsDiv.style.cssText = 'grid-column: 1 / -1; margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 16px; border: 2px solid var(--primary);';
+            tipsDiv.innerHTML = `
+                <h3 style="color: var(--dark); margin-bottom: 1rem;">💡 How to Use These Resources Effectively</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <div style="padding: 1rem; background: white; border-radius: 12px;">
+                        <strong style="color: var(--primary);">🎯 Start Small</strong>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text);">
+                            Pick ONE resource from your weakest skill area. Complete it before moving to the next.
+                        </p>
+                    </div>
+                    <div style="padding: 1rem; background: white; border-radius: 12px;">
+                        <strong style="color: var(--success);">🆓 Try Free First</strong>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text);">
+                            We've found ${allRecommendations.filter(r => r.price.includes('FREE')).length} completely free resources. Start with these before paying for anything.
+                        </p>
+                    </div>
+                    <div style="padding: 1rem; background: white; border-radius: 12px;">
+                        <strong style="color: var(--warning);">📅 Set a Schedule</strong>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text);">
+                            Dedicate 30 minutes daily. Consistency beats intensity in skill development.
+                        </p>
+                    </div>
+                    <div style="padding: 1rem; background: white; border-radius: 12px;">
+                        <strong style="color: var(--accent);">📝 Track Progress</strong>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text);">
+                            Retake this assessment monthly to see your improvement!
+                        </p>
+                    </div>
+                </div>
+                <div style="margin-top: 1.5rem; padding: 1rem; background: white; border-radius: 12px; text-align: center;">
+                    <p style="font-size: 1.1rem; color: var(--dark); margin-bottom: 1rem;">
+                        <strong>🎉 Special Tip:</strong> Many paid platforms offer financial aid or free access for students and job seekers. 
+                        Always check for these options before paying!
+                    </p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <button onclick="window.open('https://www.coursera.org/financial-assistance', '_blank')"
+                                style="padding: 0.75rem 1.5rem; background: var(--primary); color: white; border: none; 
+                                       border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            Coursera Financial Aid
+                        </button>
+                        <button onclick="window.open('https://www.edx.org/financial-assistance', '_blank')"
+                                style="padding: 0.75rem 1.5rem; background: var(--primary); color: white; border: none; 
+                                       border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            edX Financial Aid
+                        </button>
+                        <button onclick="showToast('Check each platform\\'s FAQ or Help section for student discounts!', 'info')"
+                                style="padding: 0.75rem 1.5rem; background: var(--secondary); color: white; border: none; 
+                                       border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            Find Student Discounts
+                        </button>
+                    </div>
+                </div>
+            `;
+            recommendationsGrid.parentElement.appendChild(tipsDiv);
+        }
             generateRecommendations();
         }
 
